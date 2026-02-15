@@ -1,5 +1,7 @@
 package com.example.cadastroDeUsuarios.controller;
 
+import com.example.cadastroDeUsuarios.dto.LoginRequestDTO;
+import com.example.cadastroDeUsuarios.dto.LoginResponseDTO;
 import com.example.cadastroDeUsuarios.dto.UserRequestDTO;
 import com.example.cadastroDeUsuarios.dto.UserResponseDTO;
 import com.example.cadastroDeUsuarios.service.UserService;
@@ -45,5 +47,11 @@ public class UserController {
     public ResponseEntity<String> deleteId(@PathVariable Long id){
          service.deleteId(id);
          return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deletado");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO){
+        LoginResponseDTO user = service.authentiction(loginRequestDTO);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
 }
