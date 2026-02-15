@@ -1,5 +1,7 @@
 package com.example.cadastroDeUsuarios.service;
 
+import com.example.cadastroDeUsuarios.dto.LoginRequestDTO;
+import com.example.cadastroDeUsuarios.dto.LoginResponseDTO;
 import com.example.cadastroDeUsuarios.dto.UserRequestDTO;
 import com.example.cadastroDeUsuarios.dto.UserResponseDTO;
 import com.example.cadastroDeUsuarios.model.User;
@@ -51,5 +53,16 @@ public class UserService {
 
     public void deleteId(Long id){
         repository.deleteById(id);
+    }
+
+    public LoginResponseDTO authentiction(LoginRequestDTO loginRequestDTO){
+        User salvo = repository.findByEmail(loginRequestDTO.email()).orElseThrow(() -> new RuntimeException("Nenhum user"));
+        UserResponseDTO userResponseDTO = new UserResponseDTO(salvo);
+
+        if(!loginRequestDTO.password().equals(salvo.getPassword())){
+            throw new RuntimeException("Senha incorreta");
+        }
+
+        return new LoginResponseDTO(userResponseDTO);
     }
 }
